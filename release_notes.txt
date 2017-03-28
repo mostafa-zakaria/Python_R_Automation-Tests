@@ -1,0 +1,23 @@
+v0.86.1
+ - dply bug in lag. chnange tha part to data.table. It is more efficient as well (https://emarsys.jira.com/browse/BI-2346)
+###################################################################################
+v86.0
+ - omit invalid factor level warning in sales items check
+ - ability to override default column types
+ - refactored into convert_string_to_column_name
+ - put delete_BOM_from_string function call into utils
+ - force to load Product item codes as character (even if they are numbers)
+###################################################################################
+v85.9
+ - Corrected EOL characters in release notes
+ - BugFix: avoid: error message: stringr is undefined
+ - BugFix: avoid: error message: Error in library(stringr) : there is no package called ‘stringr’
+###################################################################################
+v85.8
+- ability to set big_file in file_params
+- remove automatic running of make_guesses_about_bad_rows (it was extreme slow for bigger files)
+- BugFix: display the excluded (from eRFM) customer example list
+- BugFix: exclude the customers from eRFM by Monetary value instead of MonetaryMean
+- Change eRFM excluded Customers prompt. Add percent value as well.
+- added release_notes.txt
+###################################################################################

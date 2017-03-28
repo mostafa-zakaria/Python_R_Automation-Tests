@@ -1,0 +1,65 @@
+# VERSION v0.86.1
+# INSTALL
+1/A Osx
+   - download and install: http://cran.r-project.org/bin/macosx/R-3.0.2.pkg
+   - In case of eRFM score calculation use latest RStudio.
+     Download and install: http://www.rstudio.com/ide/download/desktop
+     (On Osx environment further necessary program (Quartz) will be donloaded at the first run of eRFM calulation)
+
+1/B Windows
+   - download and install the latest R from: http://cran.rstudio.com/bin/windows/base/ #eg.: R-3.0.1
+     into <install_dir>		#default location: "C:\Program Files\R\R-3.0.1\"
+   - download and install the latest R-tools from: http://cran.r-project.org/bin/windows/Rtools/
+   - In case of eRFM score calculation use latest RStudio.
+     Download and install: http://www.rstudio.com/ide/download/desktop
+
+2. select a <working_dir>
+#eg.: c:/works
+
+3. select a <profiling_script> directory. 
+#eg.: c:/works/profiling_script
+Copy the contents of profiling_script directory to <profiling_script> directory.
+
+# CUSTOMER RELATED SETTINGS
+1. create <customer_name> directory in <working_dir>	#eg.: c:/works/<customer_name>
+
+
+#########################################
+E-commerce file format description can be found on the next page:
+https://emarsys.jira.com/wiki/display/PDM/Importing+external+e-commerce+data+to+Smart+Insight
+
+#########################################
+IN case of the OLD e-commerce file format
+#########################################
+2. copy the necessary files into <working_dir>/<customer_name> directory (ie.: orders.csv, order_items.csv, contacts.csv )
+3. copy profiling.R file into <working_dir>/<customer_name> direcotry
+4. edit the profiling.R configuration file and set the parameters according to customer specific files and attributes (params are case sensitive)
+The profiling.R file contains the customer specific params, and the location of the profiling script (<profiling_scripts>). 
+The profiling process starts with the last command in this file. (It will run the "run_profiling.R" script).
+
+# RUN PROFILING
+1/A osx
+run the following command: rscript profiler.R from the <working_dir>/<customer_name> directory.
+
+1/B Windows
+
+run the following command: "<install_dir>\bin\Rscript.exe" Profiling.R from the <working_dir>/<customer_name> directory.
+(for example in windows: "C:\Program Files\R\R-3.0.1\bin\Rscript.exe" profiling.R)
+
+#########################################
+IN case of the NEW e-commerce file format
+#########################################
+2. copy the necessary files into <working_dir>/<customer_name> directory (ie.: sales_items.csv, products.csv, contacts.csv )
+3. copy profiling_si.R file into <working_dir>/<customer_name> direcotry
+4. edit the profiling_si.R configuration file and set the parameters according to customer specific files and attributes (params are case sensitive)
+The profiling_si.R file contains the customer specific params, and the location of the profiling script (<profiling_scripts>). 
+The profiling process starts with the last command in this file. (It will run the "run_profiling_si.R" script).
+
+# RUN PROFILING
+1/A osx
+run the following command: rscript profiler_si.R from the <working_dir>/<customer_name> directory.
+
+1/B Windows
+
+run the following command: "<install_dir>\bin\Rscript.exe" Profiling_si.R from the <working_dir>/<customer_name> directory.
+(for example in windows: "C:\Program Files\R\R-3.0.1\bin\Rscript.exe" profiling_si.R)

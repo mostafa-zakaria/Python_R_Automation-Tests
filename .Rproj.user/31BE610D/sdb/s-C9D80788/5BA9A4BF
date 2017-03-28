@@ -1,0 +1,17 @@
+{
+    "contents" : "source(\"utils/parse_columns.R\", chdir=TRUE)\n\ncheckProduct <- function(file_params, file, product_columns) {\n  \n  wappend(\"############################################################## PRODUCTS #######################################################\", file)\n  \n  product_results <- readFile (file_params)\n  product <- product_results$data\n  \n  wappend(\"Checking columns:\", file, TRUE)\n  product_columns <- parse_columns(product, product_columns)\n  \n  if ((product_columns$item$index == 0) | (product_columns$title$index == 0) | (product_columns$category$index == 0) ) {\n    wappend(\"1. There is missing required column. Profiling has been stopped.\", file, TRUE)\n    return (product)\n  } else {\n    wappend(\"1. Required columns found.\", file, TRUE)\n  }\n\n  summary <- summaries (product, unique_CI = product_columns$item$index)\n\n  write_summaries(summary = summary, file = file)\n  \n  return (list(data=product, columns=product_columns, result=product_results$result))\n}\n\n\n",
+    "created" : 1444050456936.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "2606248379",
+    "id" : "5BA9A4BF",
+    "lastKnownWriteTime" : 1417701030,
+    "path" : "~/Works/src/si-tools/R_profiling/profiling_script/checkProduct.R",
+    "project_path" : "profiling_script/checkProduct.R",
+    "properties" : {
+    },
+    "relative_order" : 7,
+    "source_on_save" : false,
+    "type" : "r_source"
+}

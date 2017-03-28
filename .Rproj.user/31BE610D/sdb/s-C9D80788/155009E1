@@ -1,0 +1,18 @@
+{
+    "contents" : "context('Aggregation of sales items')\n\ntest_that(\"Aggregation of sales items calculates the RFM values on contact level into salesRFM df\", {\n  df <- read.table('../test_data/act_sales_item.csv', header = T)\n  df$OrderDate <- as.Date(df$OrderDate)\n\n  sales_rfm <- read.table('../test_data/sales_rfm.csv', header = T)\n  sales_rfm$Monetary <- as.numeric(sales_rfm$Monetary)\n  sales_rfm$MonetaryMean <- as.numeric(sales_rfm$MonetaryMean)\n  sales_rfm$ConversionPeriod <- as.numeric(sales_rfm$ConversionPeriod)\n  sales_rfm$ActivityPeriod <- as.numeric(sales_rfm$ActivityPeriod)\n  sales_rfm <- tbl_df(sales_rfm)\n  \n  result <- aggregate_rfm(df, 15)\n  result[is.nan(result$ActivityPeriod),]$ActivityPeriod <- NA\n\n  expect_that(result, equals(sales_rfm))\n})\n",
+    "created" : 1444044459325.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "2342462051",
+    "id" : "155009E1",
+    "lastKnownWriteTime" : 1444049631,
+    "path" : "~/Works/src/si-tools/R_profiling/tests/eRFM_utils/test-aggregate_salesrfm.R",
+    "project_path" : "tests/eRFM_utils/test-aggregate_salesrfm.R",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 3,
+    "source_on_save" : false,
+    "type" : "r_source"
+}

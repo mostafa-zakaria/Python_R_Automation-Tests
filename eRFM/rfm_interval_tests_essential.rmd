@@ -1,0 +1,122 @@
+eRFM `r customerName`
+========================================================
+
+### Sales Items data to analize
+##### Files: `r fileNames`
+#### Affected years (parameter rfm_calc_years), minimum and  maximum purchase dates :
+```{r echo=FALSE, comment=""}
+cat("rfm_calc_years parameter:",rfm_calc_years,"; Data from:",as.character(min(act_sales_item$OrderDate)), "; to:", as.character(max(act_sales_item$OrderDate)))
+```
+#### Make sure the Monetary values are bigger or equal then zero, and there are no NULL or bad values in Order Date
+```{r echo=FALSE}
+if (na_monetary.count > 0) {
+  cat(paste("Count of NA Monetary values:",na_monetary.count,". There might be NA value in order file prize column. "), "\n")
+  cat("CustomerID example(s):",head(as.character(na_monetary.examples)), "was (were) excluded from analisys")
+}
+
+if (negative_monetary.count > 0) {
+  percent <- round(negative_monetary.count/length(unique(sales_cust$CustomerID))*100,2)
+  cat(paste("Number of contacts with a negative turnover (Monetary) for the given time period:",negative_monetary.count,' (', percent, '% of the contacts)'), "\n")
+  cat("CustomerID example(s):",head(as.character(negative_monetary.examples)), "was (were) excluded from analisys")
+} else {
+  cat(paste("Count of negative Monetary values:",negative_monetary.count))
+}
+
+if (length(order_date_na_examples) > 0) {
+  cat(paste("Count of NULL or bad values in Order Date:",length(order_date_na_examples)), "\n")
+  cat("OrderID example(s):",head(as.character(order_date_na_examples)), "was (were) excluded from analisys")
+}
+
+```
+
+### Frequency
+#### Frequency - first timers vs recurring
+```{r echo=FALSE, comment="", fig.width=12, fig.height=10}
+tFreq <- as.data.frame(table(salesRFM$Frequency))
+names(tFreq)[2] <- "F"
+maxFreq <- max(salesRFM$Frequency)
+xlim_to <- 10
+if (nrow(tFreq) > 31) {
+  xlim_to <- 20
+}
+
+fc_breaks <- c(1,2,max(salesRFM$Frequency))
+fc_df <- salesRFM[,c("Frequency", "Monetary")]
+show_intervals (df <- fc_df, 
+                p_breaks <- fc_breaks, 
+                p_title = paste("Frequency - first timers vs recurring"), 
+                p_xlim = c(0,xlim_to),
+                p_bw=0.5
+                )
+
+```
+
+The recurring customers (`r round(dim(salesRFM[salesRFM$Frequency > 1,])[1]/dim(salesRFM[,])[1]*100,2)` % of whole population) are responsible for the `r round(sum(salesRFM[salesRFM$Frequency > 1,]$Monetary)/sum(salesRFM$Monetary)*100,2)`% of Total Revenue. The first timers are (`r round(dim(salesRFM[salesRFM$Frequency == 1,])[1]/dim(salesRFM[,])[1]*100,2)` % of whole population) are responsible for the `r round(sum(salesRFM[salesRFM$Frequency == 1,]$Monetary)/sum(salesRFM$Monetary)*100,2)`% of Total Revenue.
+
+First timer customers average spent value: `r round(mean(salesRFM[salesRFM$Frequency == 1,]$Monetary)[1])` 
+Recurring customers average spent value: `r round(mean(salesRFM[salesRFM$Frequency > 1,]$Monetary)[1])` 
+
+### Activity Period
+#### Activity Period - based on quantiles
+```{r echo=FALSE, comment="", fig.width=12, fig.height=10}
+ap_probs <- c(0,0.50,0.95,1.0)
+ap_breaks <- quantile(salesRFM[salesRFM$Frequency > 1,c("ActivityPeriod")], probs=ap_probs)
+ap_df <- salesRFM[salesRFM$Frequency > 1,c("ActivityPeriod", "Monetary")]
+cat(paste("Count of recurring customers:",length(ap_df$ActivityPeriod)))
+show_intervals (df <- ap_df, 
+                p_breaks <- ap_breaks, 
+                p_title = paste("ActivityPeriod - quantiles:",paste(ap_probs,collapse=",")), 
+                NULL
+)
+```
+
+### Recency
+#### Whole population recency - by custom
+```{r echo=FALSE, comment="", fig.width=12, fig.height=10}
+#rc_breaks <- c(0, 70, 370,731)
+
+#get the custom breaks from conversion period quantiles
+rc_breaks <- ap_breaks
+#change the last interval end to the maximum of recency from the whole population
+rc_breaks[4] <- max(salesRFM$Recency)
+
+rc_df <- salesRFM[,c("Recency", "Monetary")]
+show_intervals (df <- rc_df, 
+                p_breaks <- rc_breaks, 
+                p_title = paste("Recency - whole population, custom: ",paste(rc_breaks,collapse=",")) , 
+                p_xlim = NULL#c(0,quantile(salesRFM$Monetary, 0.75) + IQR(salesRFM$Monetary) * 4)
+)
+
+```
+
+### Monetary
+#### Monetary - kmeans
+```{r echo=FALSE, comment="", fig.width=12, fig.height=10}
+exclude_top_n <- 10
+cat(paste( "Top", exclude_top_n, "excluded"))
+display_kmeans (
+  df <- salesRFM[,c("Monetary", "Monetary")], 
+  p_centers <- 5, 
+  p_nstart <- 20, 
+  p_title <- "Monetary", 
+  p_xlim <- c(0,quantile(salesRFM$Monetary, 0.75) + IQR(salesRFM$Monetary) * 8),
+  original_max_value <- -1,
+  p_exclude_top_n <- exclude_top_n
+  )
+```
+
+
+#### Monetary - by custom
+```{r echo=FALSE, comment="", fig.width=12, fig.height=10}
+#cat(paste("Max. monetary value:",max(salesRFM$Monetary)))
+
+#Add custom monetary limits:
+#mc_breaks <- c(0,100, 250, 500, 1000, 42394)
+#mc_df <- salesRFM[,c("Monetary", "Monetary")]
+
+#show_intervals (df <- mc_df, 
+#                p_breaks <- mc_breaks, 
+#                p_title = "Monetary", 
+#                p_xlim = c(0,quantile(salesRFM$Monetary, 0.75) + IQR(salesRFM$Monetary) * 4)
+#                )
+```

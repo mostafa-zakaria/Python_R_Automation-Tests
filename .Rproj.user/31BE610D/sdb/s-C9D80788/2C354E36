@@ -1,0 +1,17 @@
+{
+    "contents" : "load_and_install_package(\"plyr\")\nload_and_install_package(\"dplyr\")\nload_and_install_package(\"data.table\")\nsource(paste(eRFMScriptLocation,\"/utils/aggregate_salesrfm.R\",sep=\"\"), chdir = T)\n\nsalesRFM <- aggregate_rfm(act_sales_item, rfm_calc_years)\n\nna_monetary.examples <- contact_dim[contact_dim$contact_integer_id %in% get_na_examples_by_column(salesRFM, 4, 1),2]\n\nna_monetary.count <- length(na_monetary.examples)\n\nnegative_monetary.examples <- contact_dim[contact_dim$contact_integer_id %in% get_negative_examples_by_column(salesRFM, 4, 1),2]\nnegative_monetary.count <- length(negative_monetary.examples)\n\nsalesRFM <- exclude_negative_or_na_values_by_column(salesRFM, 4)\nsalesRFM <- as.data.frame(salesRFM)",
+    "created" : 1432633802291.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "863605927",
+    "id" : "2C354E36",
+    "lastKnownWriteTime" : 1444050999,
+    "path" : "~/Works/src/si-tools/R_profiling/eRFM/dplyr_calculate_salesRFM.R",
+    "project_path" : "eRFM/dplyr_calculate_salesRFM.R",
+    "properties" : {
+    },
+    "relative_order" : 0,
+    "source_on_save" : false,
+    "type" : "r_source"
+}

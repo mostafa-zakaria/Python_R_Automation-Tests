@@ -1,0 +1,48 @@
+1. profiler gives the next warning:
+"
+In addition: Warning messages:
+1: In grepl("\n", lines, fixed = TRUE) :
+  input string 46 is invalid in this locale
+"
+
+Solution:
+#add the following line into the profiler.R file:
+
+Sys.setlocale('LC_ALL','C')
+
+2. 
+Error in library(Hmisc, lib.loc = RLibraryLocation) : 
+  there is no package called ???Hmisc???
+
+Solution:
+#uncomment the following line in profiler.R file, and set a writable folder:
+
+RLibraryLocation <- ""
+
+3. 
+What should I do if the specific file doesn't contain an optional column (eg.: OrderItemSalesQuantity_CN: quantity column missing from sales_item file):
+#Set the parameter empty string:
+OrderItemSalesQuantity_CN <-""
+
+4.
+Error in type.convert(data[[i]], as.is = as.is[i], dec = dec, na.strings = character(0L)) : 
+  invalid input '<some string doesn't encoded in utf8>' in 'utf8towcs'
+
+Solution:
+set the encoding = "undefined" in the appropriate file parameter list. See (5.)
+
+5. Default file parameter list (can be change in the profiling.R and profiling_sales_items.R file):
+
+file_params <- list(
+  separator = ","
+  has_header = TRUE,
+  quote = "\"",
+  comment_char = "",
+  stop_count = 3,
+  encoding = "UTF-8",
+  dec = ".",
+  na_values = c("na","na.","n/a","n/a.","#n/a","#n/a.", "null"),
+  string_as_factor = TRUE
+)
+
+

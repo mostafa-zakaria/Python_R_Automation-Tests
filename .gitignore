@@ -1,0 +1,5 @@
+.RData
+.DS_Store
+../.DS_Store
+.Rhistory
+R_profiling.Rproj

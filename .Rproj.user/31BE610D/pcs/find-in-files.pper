@@ -1,0 +1,10 @@
+{
+    "dialog-state" : {
+        "caseSensitive" : false,
+        "filePatterns" : [
+        ],
+        "path" : "~/Works/src/si-tools/R_profiling",
+        "query" : "data.table",
+        "regex" : false
+    }
+}

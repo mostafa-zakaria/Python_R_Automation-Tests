@@ -1,0 +1,13 @@
+{
+    "path" : "~/Works/src/si-tools/R_profiling/eRFM",
+    "sortOrder" : [
+        {
+            "ascending" : false,
+            "columnIndex" : 1
+        },
+        {
+            "ascending" : true,
+            "columnIndex" : 2
+        }
+    ]
+}

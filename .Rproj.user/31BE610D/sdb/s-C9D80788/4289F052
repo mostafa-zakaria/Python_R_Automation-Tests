@@ -1,0 +1,18 @@
+{
+    "contents" : "print(getwd())\nsource(\"../../profiling_script/utils/utils.R\")\nload_and_install_package(\"plyr\")\nload_and_install_package(\"dplyr\")\nload_and_install_package(\"data.table\")\n\n\naggregate_rfm <- function (act_sales_item, rfm_calc_years) {\n  max_order_date <- max(act_sales_item$OrderDate)\n  fromDate <- get_date_before(max_order_date, years <- rfm_calc_years, months <- NULL)\n  act_sales_item <- filter(act_sales_item, OrderDate >= fromDate)\n  \n  #Aggregate by ORDER\n  sales_cust <- act_sales_item %>%\n    group_by(CustomerID, OrderID) %>%\n    summarise( Price = sum(Price,na.rm = TRUE), OrderDate = min(OrderDate))\n  sales_cust <- sales_cust %>%\n    mutate(\n      #     recency = difftime(max_order_date,OrderDate,units=\"days\")\n      recency =as.integer(max_order_date) - as.integer(OrderDate)\n    )\n  sales_cust <- sales_cust %>%\n    arrange(CustomerID, OrderDate)\n  \n  sales_cust <- sales_cust %>%\n    ungroup() %>%\n    group_by(CustomerID) %>%\n    arrange(CustomerID, OrderDate) %>%\n    mutate(\n      # days_diff = as.integer(OrderDate) - as.integer(lag(OrderDate)),\n      rn = row_number(CustomerID)\n    ) \n  \n  sales_cust <- data.table(sales_cust)\n  sales_cust[, integer_date := as.integer(OrderDate)]\n  sales_cust <- sales_cust[, lag.integer_date:=c(NA, integer_date[-.N]), by=CustomerID]\n  sales_cust <- sales_cust[, days_diff := as.integer(OrderDate) - lag.integer_date]\n  \n  sales_cust <- as.data.frame(sales_cust) %>% \n    group_by(CustomerID) \n  \n  sales_cust <- sales_cust %>%\n    summarise(\n      Recency = min(recency),\n      Frequency = n(),\n      Monetary = round(sum(Price)),\n      MonetaryMean = round(mean(Price)),\n      ConversionPeriod = max(ifelse( rn == 2, days_diff,-1)),\n      ActivityPeriod = round(mean(days_diff, na.rm=TRUE))\n    ) %>%\n    arrange(CustomerID)\n  \n  sales_cust[sales_cust$ConversionPeriod == -1,]$ConversionPeriod <- NA\n  sales_cust\n}",
+    "created" : 1444045055247.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "2369244244",
+    "id" : "4289F052",
+    "lastKnownWriteTime" : 1444051195,
+    "path" : "~/Works/src/si-tools/R_profiling/eRFM/utils/aggregate_salesrfm.R",
+    "project_path" : "eRFM/utils/aggregate_salesrfm.R",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 3,
+    "source_on_save" : false,
+    "type" : "r_source"
+}

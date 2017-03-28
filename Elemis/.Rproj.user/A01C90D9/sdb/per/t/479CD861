@@ -1,0 +1,20 @@
+{
+    "collab_server" : "",
+    "contents" : "#VERSION: v0.86.1\n#PARAMETERS\n#FILES\n\n#in linux or osx environments uncomment the next line, and set a writable folder for storing the necessary packages.\n#RLibraryLocation <- \"~/R_library\"\n\ncustomerName <- \"Automation\"\t#\n#eRFM params\neRFMScriptLocation <- \"~/Documents/Proposals & Works/Profiler/Elemis/eRFM\"\nrfm_calc_years <- 2\n\nprofilingScriptLocation <- \"~/Documents/Proposals & Works/Profiler/Elemis/profiling_script\" #Full path\n\n#To skip a specific file, delete the file parameter or set an empty sring for the name\n#PRODUCT\nproduct_file_params <- list(\n  name = '',\n  separator = ','\n)\n#SALES_ITEM FILE PARAMS\nsales_items_file_params <- list(\n  name = 'Automation_Orders.csv',\n  separator = ','\n)\n\n#CONTACTFILE PARAMS\ncontact_file_params <- list(\n  name = '',\n  separator = ',',\n  quote = \"\"\n)\n\n#Required column names in CONTACT\nUserId_CN <- \"\"\nregistration_date_CN <- \"\"\n\n#PRODUCT\nproduct_columns <- list(\n  item = \"item\",\n  title = \"title\",\n  category = \"category\"\n)\n\n#SALES_ITEM\nsales_item_columns <- list(\n  order = \"order\",\n  date = \"date\",\n  customer = \"customer\",\n  item = \"item\",\n  amount = \"amount\",\n  quantity = \"quantity\",\n  price = \"price\"\n)\n\n#OPTIONAL PARAMS\n\nsource(paste(profilingScriptLocation,\"/run_profiling_si.R\",sep=\"\"))\nsource(\"run_eRFM.R\")",
+    "created" : 1490274878959.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "184035808",
+    "id" : "479CD861",
+    "lastKnownWriteTime" : 1490693650,
+    "last_content_update" : 1490693650800,
+    "path" : "~/Documents/Proposals & Works/Profiler/Elemis/profiling_sales_item.R",
+    "project_path" : null,
+    "properties" : {
+    },
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

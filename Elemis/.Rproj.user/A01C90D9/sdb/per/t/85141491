@@ -1,0 +1,20 @@
+{
+    "collab_server" : "",
+    "contents" : "#myArgs <- commandArgs(trailingOnly = TRUE)\n\n#eRFMScriptLocation <- myArgs[1]\n\n#eRFMScriptLocation <- \"~/Documents/Proposals & Works/Profiler/Elemis\"\n#installing necessary libraries\n#source(paste(eRFMScriptLocation,\"/profiling_script/utils/exception_handling.R\",sep=\"\"), chdir=TRUE)\n#source(paste(eRFMScriptLocation,\"/eRFM/utils/recency_k_mean.R\",sep=\"\"), chdir=TRUE)\n\nsource(\"profiling_script/utils/exception_handling.R\", chdir=TRUE)\nsource(\"eRFM/utils/recency_k_mean.R\", chdir=TRUE)\n\nif(!exists(\"load_and_install_package\", mode=\"function\")) source(\"profiling_script/utils/package_tools.R\")\nload_and_install_package(\"knitr\")\nload_and_install_package(\"reshape\")\n##############################################################################################################################\n#eRFM related base calculations, and necessary functions\n\n#If the customer douesn't have quantity or unit price column:\nact_sales_item <- sales_item$data[,c(sales_item$columns$order$index,sales_item$columns$date$index,sales_item$columns$customer$index,sales_item$columns$item$index,sales_item$columns$amount$index)]\nnames(act_sales_item) <- c(\"OrderID\",\"OrderDate\",\"CustomerID\",\"ItemCode\", \"Price\")\n\n#Common issue 1:\n#If the customer douesn't have Amount column (mandatory), but quantity and amount (which is unit price) are present:\n#act_sales_item <- sales_item[,c(si_order_CI,si_date_CI,si_customer_CI,si_item_CI,si_quantity_CI,si_amount_CI)]\n#If the customer douesn't have Amount column (mandatory), but quantity and price (which is unit price) are present:\n#act_sales_item <- sales_item[,c(si_order_CI,si_date_CI,si_customer_CI,si_item_CI,si_quantity_CI,si_price_CI)]\n#names(act_sales_item) <- c(\"OrderID\",\"OrderDate\",\"CustomerID\",\"ItemCode\", \"Quantity\", \"ItemPrice\")\n#act_sales_item$Price <- act_sales_item$ItemPrice*act_sales_item$Quantity\n\n#Common issue 2:\n#Date conversion. \ndateFormat <- checkDate (sales_item$data,sales_item$columns$date$index) \nact_sales_item$OrderDate <- as.Date(as.character(act_sales_item$OrderDate),dateFormat)\n#act_sales_item$OrderDate <- as.Date(as.character(act_sales_item$OrderDate))\n\n# NA handling in date column\norder_date_na_examples <- get_na_examples_by_column(df = act_sales_item, na_lookup_column_id = 2, return_column_id = 1)\nact_sales_item <- act_sales_item[!is.na(act_sales_item$OrderDate),]\n\n#Write to the console the date range\nmin(act_sales_item$OrderDate)\nmax(act_sales_item$OrderDate)\n\n#Common issue 3:\n#Round and check the prices\nstop_if_not_a_number(act_sales_item$Price, \"Price (si_amount_CN)\")\nact_sales_item$Price <- convert_to_numeric_if_factor(act_sales_item$Price)\nact_sales_item$Price <- round(act_sales_item$Price)\n\n#SALES RFM CALCULATION\n#the RFM score calculation use sales_items data between the maximum orderdate and (maximum orderdate - <rfm_calc_years> years)\n# system.time(source(paste(eRFMScriptLocation,\"/calculate_salesRFM.R\",sep=\"\")))\nsystem.time(source(\"eRFM/dplyr_calculate_salesRFM.R\"))\n\nknit2html (input<-'rfm_interval_tests.rmd',output=paste(customerName,\"_rfm_ints_test.html\",sep=\"\"))\nknit2html (input<-'rfm_interval_tests_essential.rmd',output=paste(customerName,\"_rfm_ints_test_essential.html\",sep=\"\"))\n\n",
+    "created" : 1490692621484.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "2898343264",
+    "id" : "85141491",
+    "lastKnownWriteTime" : 1490693724,
+    "last_content_update" : 1490693724550,
+    "path" : "~/Documents/Proposals & Works/Profiler/Elemis/run_eRFM.R",
+    "project_path" : null,
+    "properties" : {
+    },
+    "relative_order" : 4,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

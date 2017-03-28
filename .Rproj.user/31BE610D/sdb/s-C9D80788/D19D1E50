@@ -1,0 +1,25 @@
+{
+    "contents" : "",
+    "created" : 1444045822776.000,
+    "dirty" : false,
+    "encoding" : "",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "D19D1E50",
+    "lastKnownWriteTime" : 7221297027806658559,
+    "path" : null,
+    "project_path" : null,
+    "properties" : {
+        "cacheKey" : "ghokhzsfv7",
+        "caption" : "sales_rfm",
+        "contentUrl" : "grid_resource/gridviewer.html?env=&obj=sales_rfm&cache_key=ghokhzsfv7",
+        "displayedObservations" : "68",
+        "environment" : "",
+        "object" : "sales_rfm",
+        "totalObservations" : "68",
+        "variables" : "7"
+    },
+    "relative_order" : 5,
+    "source_on_save" : false,
+    "type" : "r_dataframe"
+}
