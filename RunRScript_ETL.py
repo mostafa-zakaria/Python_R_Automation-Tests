@@ -1,5 +1,4 @@
 import timeit as tt
-import pandas as pd
 
 from subprocess import run, PIPE
 from pandas import DataFrame, read_csv, to_numeric, to_datetime
@@ -19,7 +18,7 @@ def getArgumentsOrig():
     global data
 
     customerName = "R_ETL_Test"
-    
+
     data = {"orderFile" : datafile,
             "order" : "Order",
             "date" : "Date",
@@ -41,9 +40,9 @@ def getArgumentsOrig():
 def getArguments():
     global customerName
     global columnMap
-    
+
     customerName = "Python_ETL_Test"
-    
+
     columnMap = {"Order" : "order",
                  "Date" : "date",
                  "Customer" : "customer",
@@ -59,7 +58,7 @@ def getArguments():
 #                "Amount" : "amount",
 #                "Quantity" : "quantity",
 #                "Price" : "price"}
-    
+
 
 def runETLProcess(location):
     df = pd.read_csv(location)
@@ -70,7 +69,7 @@ def runETLProcess(location):
     df["amount"] = to_numeric(df["amount"], downcast = 'float', errors = 'coerce')
     df["quantity"] = to_numeric(df["quantity"], downcast = 'integer', errors = 'coerce')
     df["price"] = to_numeric(df["price"], downcast = 'float', errors = 'coerce')
-    
+
     df.to_csv("Automation_Orders.csv",
               columns=["order", "date", "customer", "item", "quantity", "amount", "price"],
               index = False, index_label = False,
@@ -107,7 +106,7 @@ def runSIProfilerOrig():
                 data["amount"],
                 data["quantity"],
                 data["price"]]
-        
+
         cmdStr = " ".join([command, translationScript] + args)
         CP = run(cmdStr,
                  shell = True,
@@ -138,11 +137,9 @@ def main():
 def mainOrig():
     getArgumentsOrig()
     return(runSIProfilerOrig())
-    
+
 #getArguments()
 #print(runETLProcess(datafile))
 
 #print(mainOrig())
 print(main())
-
-
