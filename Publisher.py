@@ -12,15 +12,38 @@ channel = connection.channel() # start a channel
 channel.queue_declare(queue='HelloQ') # Declare a queue
 # send a message
 
-message = {"datafile" : 'SI_Data_No_Guest_Mod_Div.csv',
-           "customername" : 'RabbitMQ',
+message = {"datafile" : 'SI_Data_No_Guest_Mod_V0.2.csv',
+           "customername" : 'Sequence_Test',
            "Order" : "order",
            "Date" : "date",
            "Customer" : "customer" ,
            "Item" : "item" ,
-           "Total_Price" : "amount",
+           "Sales Amount" : "amount",
            "Quantity" : "quantity",
-           "Unit_Price" : "price"}
+           "Unit Price" : "price"}
+
+#message = "TESTing Connection.close()"
+
+#message = {"datafile" : "24_month_order data2.csv",
+#           "customername" : "Nixon_Test",
+#           "Document No_" : "order",
+#           "Posting Date" : "date",
+#           "Customer" : "customer",
+#           "Item" : "item",
+#           "Sales Amount (Actual)" : "amount",
+#           "Quantity" : "quantity",
+#           "price" : "price"}
+
+#message = {"datafile" : "",
+#           "customername" : "",
+#           "0" : "order",
+#           "1" : "date",
+#           "3" : "customer",
+#           "4" : "item",
+#           "5" : "amount",
+#           "" : "quantity",
+#           "" : "price"}
+
 
 print("Encoding Message as JSON> {}".format(type(json.dumps(message))))
 
